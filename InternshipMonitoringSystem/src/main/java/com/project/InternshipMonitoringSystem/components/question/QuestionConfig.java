@@ -20,7 +20,7 @@ public class QuestionConfig {
             );
 
             repository.saveAll(
-                    List.of()
+                    List.of(question1, question2)
             );
         };
     }
