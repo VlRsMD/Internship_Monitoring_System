@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.test;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class TestController {
     private final TestService testService;
 
-    @Autowired
     public TestController(TestService testService) {
         this.testService = testService;
     }
@@ -20,9 +18,12 @@ public class TestController {
         return testService.getTests();
     }
 
-    @PostMapping
-    public void registerNewTest(@RequestBody Test test) {
-        testService.addNewTest(test);
+    @PostMapping(path = "question/{questionId}")
+    public void addTest(
+            @RequestBody Test test,
+            @PathVariable("questionId") Long questionId
+    ) {
+        testService.addTest(test, questionId);
     }
 
     @DeleteMapping(path = "{testId}")
@@ -30,11 +31,12 @@ public class TestController {
         testService.deleteTest(testId);
     }
 
-    @PutMapping(path = "{testId}")
-    public void updateTest(
+    @PatchMapping(path = "{testId}/question/{questionId}")
+    public void addQuestionToTheTest(
             @PathVariable("testId") Long testId,
-            @RequestParam(required = false) String title) {
-        testService.updateTest(testId, title);
+            @PathVariable("questionId") Long questionId
+    ) {
+        testService.addQuestionToTheTest(testId, questionId);
     }
 }
 

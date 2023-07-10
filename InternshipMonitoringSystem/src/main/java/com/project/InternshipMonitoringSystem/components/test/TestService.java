@@ -1,27 +1,30 @@
 package com.project.InternshipMonitoringSystem.components.test;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.InternshipMonitoringSystem.components.question.Question;
+import com.project.InternshipMonitoringSystem.components.question.QuestionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class TestService {
     private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
 
-    @Autowired
-    public TestService(TestRepository testRepository) {
+    public TestService(TestRepository testRepository, QuestionRepository questionRepository) {
         this.testRepository = testRepository;
+        this.questionRepository = questionRepository;
     }
 
     public List<Test> getTests() {
         return testRepository.findAll();
     }
 
-    public void addNewTest(Test test) {
-        System.out.println(test);
+    public void addTest(Test test, Long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalStateException("Project with ID " + questionId + " does not exist."));
+        test.registerQuestion(question);
         testRepository.save(test);
     }
 
@@ -34,13 +37,11 @@ public class TestService {
     }
 
     @Transactional
-    public void updateTest(Long testId, String title) {
+    public void addQuestionToTheTest(Long testId, Long questionId) {
         Test test = testRepository.findById(testId)
                 .orElseThrow(() -> new IllegalStateException("Test with ID " + testId + " does not exist."));
-        if (title != null &&
-                title.length() > 0 &&
-                !Objects.equals(test.getTitle(), title)) {
-            test.setTitle(title);
-        }
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalStateException("Project with ID " + questionId + " does not exist."));
+        test.registerQuestion(question);
     }
 }

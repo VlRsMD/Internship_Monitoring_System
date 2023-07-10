@@ -8,12 +8,19 @@ import java.util.List;
 
 @Configuration
 public class TestConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(TestRepository repository) {
+    CommandLineRunner testCommandLineRunner(TestRepository repository) {
         return args -> {
+            Test test1 = new Test(
+                    "Java Test"
+            );
+
+            Test test2 = new Test(
+                    "English Test"
+            );
+
             repository.saveAll(
-                    List.of()
+                    List.of(test1, test2)
             );
         };
     }

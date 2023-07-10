@@ -1,6 +1,12 @@
 package com.project.InternshipMonitoringSystem.components.test;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.InternshipMonitoringSystem.components.mark.Mark;
+import com.project.InternshipMonitoringSystem.components.question.Question;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -17,14 +23,24 @@ public class Test {
     )
     private Long id;
     private String title;
-    private Long projectID;
+
+    @ManyToMany
+    @JoinTable(
+            name = "assigned_questions",
+            joinColumns = @JoinColumn(name = "test_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id")
+    )
+    private Set<Question> assignedQuestions = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "test")
+    private Set<Mark> marks = new HashSet<>();
 
     public Test() {
     }
 
-    public Test(String title, Long projectID) {
+    public Test(String title) {
         this.title = title;
-        this.projectID = projectID;
     }
 
     public Long getId() {
@@ -43,12 +59,16 @@ public class Test {
         this.title = title;
     }
 
-    public Long getProjectID() {
-        return projectID;
+    public Set<Question> getAssignedQuestions() {
+        return assignedQuestions;
     }
 
-    public void setProjectID(Long projectID) {
-        this.projectID = projectID;
+    public void registerQuestion(Question question) {
+        assignedQuestions.add(question);
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
     }
 
     @Override
@@ -56,7 +76,6 @@ public class Test {
         return "Test{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", projectID=" + projectID +
                 '}';
     }
 }

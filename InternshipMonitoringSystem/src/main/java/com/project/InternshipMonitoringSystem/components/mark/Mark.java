@@ -1,5 +1,7 @@
 package com.project.InternshipMonitoringSystem.components.mark;
 
+import com.project.InternshipMonitoringSystem.components.candidate.Candidate;
+import com.project.InternshipMonitoringSystem.components.test.Test;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,18 +17,23 @@ public class Mark {
             strategy = GenerationType.SEQUENCE,
             generator = "mark_sequence"
     )
+
     private Long id;
     private int value;
-    private Long testID;
-    private Long candidateID;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "candidateid", referencedColumnName = "id")
+    private Candidate candidate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "testid", referencedColumnName = "id")
+    private Test test;
 
     public Mark() {
     }
 
     public Mark(int value, Long testID, Long candidateID) {
         this.value = value;
-        this.testID = testID;
-        this.candidateID = candidateID;
     }
 
     public Long getId() {
@@ -45,20 +52,20 @@ public class Mark {
         this.value = value;
     }
 
-    public Long getTestID() {
-        return testID;
+    public Candidate getCandidate() {
+        return candidate;
     }
 
-    public void setTestID(Long testID) {
-        this.testID = testID;
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
-    public Long getCandidateID() {
-        return candidateID;
+    public Test getTest() {
+        return test;
     }
 
-    public void setCandidateID(Long candidateID) {
-        this.candidateID = candidateID;
+    public void setTest(Test test) {
+        this.test = test;
     }
 
     @Override
@@ -66,8 +73,8 @@ public class Mark {
         return "Mark{" +
                 "id=" + id +
                 ", value=" + value +
-                ", testID=" + testID +
-                ", candidateID=" + candidateID +
+                ", testID=" + test.getId() +
+                ", candidateID=" + candidate.getId() +
                 '}';
     }
 }

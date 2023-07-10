@@ -1,6 +1,12 @@
 package com.project.InternshipMonitoringSystem.components.question;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.InternshipMonitoringSystem.components.project.Project;
+import com.project.InternshipMonitoringSystem.components.test.Test;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -15,16 +21,23 @@ public class Question {
             strategy = GenerationType.SEQUENCE,
             generator = "question_sequence"
     )
+
     private Long id;
     private String questionText;
-    private Long testID;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "question")
+    private Set<Project> projects = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "assignedQuestions")
+    private Set<Test> tests = new HashSet<>();
 
     public Question() {
     }
 
-    public Question(String questionText, Long testID) {
+    public Question(String questionText) {
         this.questionText = questionText;
-        this.testID = testID;
     }
 
     public Long getId() {
@@ -43,12 +56,12 @@ public class Question {
         this.questionText = questionText;
     }
 
-    public Long getTestID() {
-        return testID;
+    public Set<Project> getProjects() {
+        return projects;
     }
 
-    public void setTestID(Long testID) {
-        this.testID = testID;
+    public Set<Test> getTests() {
+        return tests;
     }
 
     @Override
@@ -56,7 +69,6 @@ public class Question {
         return "Question{" +
                 "id=" + id +
                 ", question='" + questionText + '\'' +
-                ", testID=" + testID +
                 '}';
     }
 }

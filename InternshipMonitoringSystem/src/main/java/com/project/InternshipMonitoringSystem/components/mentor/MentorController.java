@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.mentor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class MentorController {
     private final MentorService mentorService;
 
-    @Autowired
     public MentorController(MentorService mentorService) {
         this.mentorService = mentorService;
     }
@@ -20,9 +18,12 @@ public class MentorController {
         return mentorService.getMentors();
     }
 
-    @PostMapping
-    public void registerNewMentor(@RequestBody Mentor mentor) {
-        mentorService.addNewMentor(mentor);
+    @PostMapping(path = "project/{projectId}")
+    public void addMentor(
+            @RequestBody Mentor mentor,
+            @PathVariable("projectId") Long projectId
+    ) {
+        mentorService.addMentor(mentor, projectId);
     }
 
     @DeleteMapping(path = "{mentorId}")
@@ -30,10 +31,11 @@ public class MentorController {
         mentorService.deleteMentor(mentorId);
     }
 
-    @PutMapping(path = "{mentorId}")
-    public void updateMentor(
+    @PatchMapping(path = "{mentorId}/project/{projectId}")
+    public void addProjectToSupervise(
             @PathVariable("mentorId") Long mentorId,
-            @RequestParam(required = false) String name) {
-        mentorService.updateMentor(mentorId, name);
+            @PathVariable("projectId") Long projectId
+    ) {
+        mentorService.addProjectToSupervise(mentorId, projectId);
     }
 }

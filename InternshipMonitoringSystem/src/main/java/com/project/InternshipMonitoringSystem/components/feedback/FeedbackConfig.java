@@ -8,9 +8,8 @@ import java.util.List;
 
 @Configuration
 public class FeedbackConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(FeedbackRepository repository) {
+    CommandLineRunner feedbackCommandLineRunner(FeedbackRepository repository) {
         return args -> {
             repository.saveAll(
                     List.of()

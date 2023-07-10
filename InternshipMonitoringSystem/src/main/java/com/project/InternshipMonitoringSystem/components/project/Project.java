@@ -1,8 +1,13 @@
 package com.project.InternshipMonitoringSystem.components.project;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.InternshipMonitoringSystem.components.mentor.Mentor;
+import com.project.InternshipMonitoringSystem.components.question.Question;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -17,26 +22,33 @@ public class Project {
             strategy = GenerationType.SEQUENCE,
             generator = "project_sequence"
     )
+
     private Long id;
     private String name;
     private Date startDate;
     private Date endDate;
     private String status;
-    private Long technicalQuestionID;
     private String gitHubLink;
     private String trelloLink;
     private String powerPointPresentation;
     private String functionalRequirements;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "supervisedProjects")
+    private Set<Mentor> mentors = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "technical_questionid", referencedColumnName = "id")
+    private Question question;
+
     public Project() {
     }
 
-    public Project(String name, Date startDate, Date endDate, String status, Long technicalQuestionID, String gitHubLink, String trelloLink, String powerPointPresentation, String functionalRequirements) {
+    public Project(String name, Date startDate, Date endDate, String status, String gitHubLink, String trelloLink, String powerPointPresentation, String functionalRequirements) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-        this.technicalQuestionID = technicalQuestionID;
         this.gitHubLink = gitHubLink;
         this.trelloLink = trelloLink;
         this.powerPointPresentation = powerPointPresentation;
@@ -83,14 +95,6 @@ public class Project {
         this.status = status;
     }
 
-    public Long getTechnicalQuestionID() {
-        return technicalQuestionID;
-    }
-
-    public void setTechnicalQuestionID(Long technicalQuestionID) {
-        this.technicalQuestionID = technicalQuestionID;
-    }
-
     public String getGitHubLink() {
         return gitHubLink;
     }
@@ -123,6 +127,18 @@ public class Project {
         this.functionalRequirements = functionalRequirements;
     }
 
+    public Set<Mentor> getMentors() {
+        return mentors;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
@@ -131,7 +147,7 @@ public class Project {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", status='" + status + '\'' +
-                ", technicalQuestionID=" + technicalQuestionID +
+                ", technicalQuestionID=" + question.getId() +
                 ", gitHubLink='" + gitHubLink + '\'' +
                 ", trelloLink='" + trelloLink + '\'' +
                 ", powerPointPresentation='" + powerPointPresentation + '\'' +

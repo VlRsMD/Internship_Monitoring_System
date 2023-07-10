@@ -8,12 +8,19 @@ import java.util.List;
 
 @Configuration
 public class MentorConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(MentorRepository repository) {
+    CommandLineRunner mentorCommandLineRunner(MentorRepository repository) {
         return args -> {
+            Mentor john = new Mentor(
+                    "John"
+            );
+
+            Mentor william = new Mentor(
+                    "William"
+            );
+
             repository.saveAll(
-                    List.of()
+                    List.of(john, william)
             );
         };
     }

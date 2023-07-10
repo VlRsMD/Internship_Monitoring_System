@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.feedback;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +9,22 @@ import java.util.List;
 public class FeedbackController {
     private final FeedbackService feedbackService;
 
-    @Autowired
     public FeedbackController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
     }
 
     @GetMapping
-    public List<Feedback> getCandidates() {
+    public List<Feedback> getFeedbacks() {
         return feedbackService.getFeedbacks();
     }
 
-    @PostMapping
-    public void registerNewFeedback(@RequestBody Feedback feedback) {
-        feedbackService.addNewFeedback(feedback);
+    @PostMapping(path = "candidate/{candidateId}/mentor/{mentorId}")
+    public void addFeedback(
+            @RequestBody Feedback feedback,
+            @PathVariable("candidateId") Long candidateId,
+            @PathVariable("mentorId") Long mentorId
+    ) {
+        feedbackService.addFeedback(feedback, candidateId, mentorId);
     }
 
     @DeleteMapping(path = "{feedbackId}")
@@ -30,10 +32,10 @@ public class FeedbackController {
         feedbackService.deleteFeedback(feedbackId);
     }
 
-    @PutMapping(path = "{feedbackId}")
-    public void updateFeedback(
+    @PatchMapping(path = "{feedbackId}")
+    public void changeFeedbackText(
             @PathVariable("feedbackId") Long feedbackId,
             @RequestParam(required = false) String feedbackText) {
-        feedbackService.updateFeedback(feedbackId, feedbackText);
+        feedbackService.changeFeedbackText(feedbackId, feedbackText);
     }
 }

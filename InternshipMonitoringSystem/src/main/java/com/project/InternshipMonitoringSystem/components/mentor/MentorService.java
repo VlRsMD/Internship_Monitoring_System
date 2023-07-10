@@ -1,27 +1,30 @@
 package com.project.InternshipMonitoringSystem.components.mentor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.InternshipMonitoringSystem.components.project.Project;
+import com.project.InternshipMonitoringSystem.components.project.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class MentorService {
     private final MentorRepository mentorRepository;
+    private final ProjectRepository projectRepository;
 
-    @Autowired
-    public MentorService(MentorRepository mentorRepository) {
+    public MentorService(MentorRepository mentorRepository, ProjectRepository projectRepository) {
         this.mentorRepository = mentorRepository;
+        this.projectRepository = projectRepository;
     }
 
     public List<Mentor> getMentors() {
         return mentorRepository.findAll();
     }
 
-    public void addNewMentor(Mentor mentor) {
-        System.out.println(mentor);
+    public void addMentor(Mentor mentor, Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalStateException("Project with ID " + projectId + " does not exist."));
+        mentor.registerProject(project);
         mentorRepository.save(mentor);
     }
 
@@ -34,13 +37,11 @@ public class MentorService {
     }
 
     @Transactional
-    public void updateMentor(Long mentorId, String name) {
+    public void addProjectToSupervise(Long mentorId, Long projectId) {
         Mentor mentor = mentorRepository.findById(mentorId)
                 .orElseThrow(() -> new IllegalStateException("Mentor with ID " + mentorId + " does not exist."));
-        if (name != null &&
-                name.length() > 0 &&
-                !Objects.equals(mentor.getName(), name)) {
-            mentor.setName(name);
-        }
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalStateException("Project with ID " + projectId + " does not exist."));
+        mentor.registerProject(project);
     }
 }

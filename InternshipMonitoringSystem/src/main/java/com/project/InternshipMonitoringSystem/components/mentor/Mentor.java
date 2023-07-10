@@ -1,6 +1,12 @@
 package com.project.InternshipMonitoringSystem.components.mentor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.InternshipMonitoringSystem.components.feedback.Feedback;
+import com.project.InternshipMonitoringSystem.components.project.Project;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -15,16 +21,27 @@ public class Mentor {
             strategy = GenerationType.SEQUENCE,
             generator = "mentor_sequence"
     )
+
     private Long id;
     private String name;
-    private Long projectID;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "mentor")
+    private Set<Feedback> feedbacks = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "project_supervised",
+            joinColumns = @JoinColumn(name = "mentor_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private Set<Project> supervisedProjects = new HashSet<>();
 
     public Mentor() {
     }
 
-    public Mentor(String name, Long projectID) {
+    public Mentor(String name) {
         this.name = name;
-        this.projectID = projectID;
     }
 
     public Long getId() {
@@ -43,12 +60,12 @@ public class Mentor {
         this.name = name;
     }
 
-    public Long getProjectID() {
-        return projectID;
+    public Set<Feedback> getFeedbacks() {
+        return feedbacks;
     }
 
-    public void setProjectID(Long projectID) {
-        this.projectID = projectID;
+    public Set<Project> getSupervisedProjects() {
+        return supervisedProjects;
     }
 
     @Override
@@ -56,7 +73,10 @@ public class Mentor {
         return "Mentor{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", projectID=" + projectID +
                 '}';
+    }
+
+    public void registerProject(Project project) {
+        supervisedProjects.add(project);
     }
 }

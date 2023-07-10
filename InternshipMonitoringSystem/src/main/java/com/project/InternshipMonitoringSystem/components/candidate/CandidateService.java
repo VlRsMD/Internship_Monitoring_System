@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.candidate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +11,6 @@ import java.util.Optional;
 public class CandidateService {
     private final CandidateRepository candidateRepository;
 
-    @Autowired
     public CandidateService(CandidateRepository candidateRepository) {
         this.candidateRepository = candidateRepository;
     }
@@ -21,12 +19,11 @@ public class CandidateService {
         return candidateRepository.findAll();
     }
 
-    public void addNewCandidate(Candidate candidate) {
+    public void addCandidate(Candidate candidate) {
         Optional<Candidate> candidateOptional = candidateRepository.findCandidateByEmailAddress(candidate.getEmailAddress());
         if (candidateOptional.isPresent()) {
             throw new IllegalStateException("This email address has already been taken.");
         }
-        System.out.println(candidate);
         candidateRepository.save(candidate);
     }
 
@@ -39,13 +36,13 @@ public class CandidateService {
     }
 
     @Transactional
-    public void updateCandidate(Long candidateId, String status) {
-        Candidate candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(() -> new IllegalStateException("Candidate with ID " + candidateId + " does not exist."));
-        if (status != null &&
-                status.length() > 0 &&
-                !Objects.equals(candidate.getStatus(), status)) {
-            candidate.setStatus(status);
+    public void changeCandidateStatus(Long candidateId, String status) {
+        if (status != null && status.length() > 0) {
+            Candidate candidate = candidateRepository.findById(candidateId)
+                    .orElseThrow(() -> new IllegalStateException("Candidate with ID " + candidateId + " does not exist."));
+            if(!Objects.equals(candidate.getStatus(), status)) {
+                candidate.setStatus(status);
+            }
         }
     }
 }

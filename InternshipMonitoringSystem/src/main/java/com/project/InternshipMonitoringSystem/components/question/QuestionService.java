@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.question;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +10,6 @@ import java.util.Objects;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    @Autowired
     public QuestionService(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
     }
@@ -20,8 +18,7 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    public void addNewQuestion(Question question) {
-        System.out.println(question);
+    public void addQuestion(Question question) {
         questionRepository.save(question);
     }
 
@@ -34,13 +31,13 @@ public class QuestionService {
     }
 
     @Transactional
-    public void updateQuestion(Long questionId, String questionText) {
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new IllegalStateException("Question with ID " + questionId + " does not exist."));
-        if (questionText != null &&
-                questionText.length() > 0 &&
-                !Objects.equals(question.getQuestionText(), questionText)) {
-            question.setQuestionText(questionText);
+    public void changeQuestionText(Long questionId, String questionText) {
+        if (questionText != null && questionText.length() > 0) {
+            Question question = questionRepository.findById(questionId)
+                    .orElseThrow(() -> new IllegalStateException("Question with ID " + questionId + " does not exist."));
+            if(!Objects.equals(question.getQuestionText(), questionText)) {
+                question.setQuestionText(questionText);
+            }
         }
     }
 }

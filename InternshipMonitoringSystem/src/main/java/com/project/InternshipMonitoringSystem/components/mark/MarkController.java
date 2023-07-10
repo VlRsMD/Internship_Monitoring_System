@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.mark;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class MarkController {
     private final MarkService markService;
 
-    @Autowired
     public MarkController(MarkService markService) {
         this.markService = markService;
     }
@@ -20,9 +18,13 @@ public class MarkController {
         return markService.getMarks();
     }
 
-    @PostMapping
-    public void registerNewMark(@RequestBody Mark mark) {
-        markService.addNewMark(mark);
+    @PostMapping(path = "candidate/{candidateId}/test/{testId}")
+    public void addMark(
+            @RequestBody Mark mark,
+            @PathVariable("candidateId") Long candidateId,
+            @PathVariable("testId") Long testId
+    ) {
+        markService.addMark(mark, candidateId, testId);
     }
 
     @DeleteMapping(path = "{markId}")
@@ -30,10 +32,10 @@ public class MarkController {
         markService.deleteMark(markId);
     }
 
-    @PutMapping(path = "{markId}")
-    public void updateMark(
+    @PatchMapping(path = "{markId}")
+    public void changeMarkValue(
             @PathVariable("markId") Long markId,
             @RequestParam(required = false) int value) {
-        markService.updateMark(markId, value);
+        markService.changeMarkValue(markId, value);
     }
 }

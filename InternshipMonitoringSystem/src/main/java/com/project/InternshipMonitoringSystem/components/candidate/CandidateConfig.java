@@ -8,9 +8,8 @@ import java.util.List;
 
 @Configuration
 public class CandidateConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(CandidateRepository repository) {
+    CommandLineRunner candidateCommandLineRunner(CandidateRepository repository) {
         return args -> {
             Candidate alexander = new Candidate(
                "Alexander",

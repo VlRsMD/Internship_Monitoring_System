@@ -8,9 +8,8 @@ import java.util.List;
 
 @Configuration
 public class MarkConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(MarkRepository repository) {
+    CommandLineRunner markCommandLineRunner(MarkRepository repository) {
         return args -> {
             repository.saveAll(
                     List.of()

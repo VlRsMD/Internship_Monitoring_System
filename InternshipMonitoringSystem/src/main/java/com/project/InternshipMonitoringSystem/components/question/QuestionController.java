@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.question;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @Autowired
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
@@ -21,8 +19,8 @@ public class QuestionController {
     }
 
     @PostMapping
-    public void registerNewQuestion(@RequestBody Question question) {
-        questionService.addNewQuestion(question);
+    public void addQuestion(@RequestBody Question question) {
+        questionService.addQuestion(question);
     }
 
     @DeleteMapping(path = "{questionId}")
@@ -30,10 +28,10 @@ public class QuestionController {
         questionService.deleteQuestion(questionId);
     }
 
-    @PutMapping(path = "{questionId}")
-    public void updateQuestion(
+    @PatchMapping(path = "{questionId}")
+    public void changeQuestionText(
             @PathVariable("questionId") Long questionId,
             @RequestParam(required = false) String questionText) {
-        questionService.updateQuestion(questionId, questionText);
+        questionService.changeQuestionText(questionId, questionText);
     }
 }

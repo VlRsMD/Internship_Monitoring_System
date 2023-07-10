@@ -8,10 +8,17 @@ import java.util.List;
 
 @Configuration
 public class QuestionConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(QuestionRepository repository) {
+    CommandLineRunner questionCommandLineRunner(QuestionRepository repository) {
         return args -> {
+            Question question1 = new Question(
+                    "What is encapsulation?"
+            );
+
+            Question question2 = new Question(
+                    "Write Java code to print out all prime numbers <= 29."
+            );
+
             repository.saveAll(
                     List.of()
             );

@@ -8,9 +8,8 @@ import java.util.List;
 
 @Configuration
 public class ProjectConfig {
-
     @Bean
-    CommandLineRunner commandLineRunner(ProjectRepository repository) {
+    CommandLineRunner projectCommandLineRunner(ProjectRepository repository) {
         return args -> {
             repository.saveAll(
                     List.of()
@@ -18,4 +17,3 @@ public class ProjectConfig {
         };
     }
 }
-

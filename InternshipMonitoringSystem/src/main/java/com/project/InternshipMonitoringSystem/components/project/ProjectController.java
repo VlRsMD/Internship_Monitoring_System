@@ -1,6 +1,5 @@
 package com.project.InternshipMonitoringSystem.components.project;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
 
-    @Autowired
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
@@ -20,9 +18,12 @@ public class ProjectController {
         return projectService.getProjects();
     }
 
-    @PostMapping
-    public void registerNewProject(@RequestBody Project project) {
-        projectService.addNewProject(project);
+    @PostMapping(path = "question/{questionId}")
+    public void addProject(
+            @RequestBody Project project,
+            @PathVariable("questionId") Long questionId
+    ) {
+        projectService.addProject(project, questionId);
     }
 
     @DeleteMapping(path = "{projectId}")
@@ -30,11 +31,11 @@ public class ProjectController {
         projectService.deleteProject(projectId);
     }
 
-    @PutMapping(path = "{projectId}")
-    public void updateProject(
+    @PatchMapping(path = "{projectId}")
+    public void changeFunctionalRequirements(
             @PathVariable("projectId") Long projectId,
             @RequestParam(required = false) String functionalRequirements) {
-        projectService.updateProject(projectId, functionalRequirements);
+        projectService.changeFunctionalRequirements(projectId, functionalRequirements);
     }
 }
 

@@ -1,6 +1,12 @@
 package com.project.InternshipMonitoringSystem.components.candidate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.InternshipMonitoringSystem.components.feedback.Feedback;
+import com.project.InternshipMonitoringSystem.components.mark.Mark;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -15,11 +21,20 @@ public class Candidate {
         strategy = GenerationType.SEQUENCE,
         generator = "candidate_sequence"
     )
+
     private Long id;
     private String name;
     private String emailAddress;
     private String comment;
     private String status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "candidate")
+    private Set<Feedback> feedbacks = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "candidate")
+    private Set<Mark> marks = new HashSet<>();
 
     public Candidate() {
     }
@@ -69,6 +84,14 @@ public class Candidate {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Set<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
     }
 
     @Override

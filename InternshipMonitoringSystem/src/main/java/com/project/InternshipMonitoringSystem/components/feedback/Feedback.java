@@ -1,5 +1,7 @@
 package com.project.InternshipMonitoringSystem.components.feedback;
 
+import com.project.InternshipMonitoringSystem.components.candidate.Candidate;
+import com.project.InternshipMonitoringSystem.components.mentor.Mentor;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,18 +17,23 @@ public class Feedback {
             strategy = GenerationType.SEQUENCE,
             generator = "feedback_sequence"
     )
+
     private Long id;
     private String feedbackText;
-    private Long candidateID;
-    private Long mentorID;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "candidateid", referencedColumnName = "id")
+    private Candidate candidate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "mentorid", referencedColumnName = "id")
+    private Mentor mentor;
 
     public Feedback() {
     }
 
-    public Feedback(String feedbackText, Long candidateID, Long mentorID) {
+    public Feedback(String feedbackText) {
         this.feedbackText = feedbackText;
-        this.candidateID = candidateID;
-        this.mentorID = mentorID;
     }
 
     public Long getId() {
@@ -45,20 +52,20 @@ public class Feedback {
         this.feedbackText = feedbackText;
     }
 
-    public Long getCandidateID() {
-        return candidateID;
+    public Candidate getCandidate() {
+        return candidate;
     }
 
-    public void setCandidateID(Long candidateID) {
-        this.candidateID = candidateID;
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
-    public Long getMentorID() {
-        return mentorID;
+    public Mentor getMentor() {
+        return mentor;
     }
 
-    public void setMentorID(Long mentorID) {
-        this.mentorID = mentorID;
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
     }
 
     @Override
@@ -66,8 +73,8 @@ public class Feedback {
         return "Feedback{" +
                 "id=" + id +
                 ", feedbackText='" + feedbackText + '\'' +
-                ", candidateID=" + candidateID +
-                ", mentorID=" + mentorID +
+                ", candidateID=" + candidate.getId() +
+                ", mentorID=" + mentor.getId() +
                 '}';
     }
 }
