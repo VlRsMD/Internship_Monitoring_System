@@ -17,7 +17,6 @@ public class Mark {
             strategy = GenerationType.SEQUENCE,
             generator = "mark_sequence"
     )
-
     private Long id;
     private int value;
 

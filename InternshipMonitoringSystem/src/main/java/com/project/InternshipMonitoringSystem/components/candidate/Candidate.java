@@ -21,7 +21,6 @@ public class Candidate {
         strategy = GenerationType.SEQUENCE,
         generator = "candidate_sequence"
     )
-
     private Long id;
     private String name;
     private String emailAddress;

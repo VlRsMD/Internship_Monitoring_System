@@ -24,13 +24,9 @@ public class Test {
     private Long id;
     private String title;
 
-    @ManyToMany
-    @JoinTable(
-            name = "assigned_questions",
-            joinColumns = @JoinColumn(name = "test_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id")
-    )
-    private Set<Question> assignedQuestions = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "test")
+    private Set<Question> questions = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "test")
@@ -59,12 +55,8 @@ public class Test {
         this.title = title;
     }
 
-    public Set<Question> getAssignedQuestions() {
-        return assignedQuestions;
-    }
-
-    public void registerQuestion(Question question) {
-        assignedQuestions.add(question);
+    public Set<Question> getQuestions() {
+        return questions;
     }
 
     public Set<Mark> getMarks() {

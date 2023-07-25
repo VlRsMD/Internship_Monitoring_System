@@ -11,7 +11,7 @@ public class CandidateConfig {
     @Bean
     CommandLineRunner candidateCommandLineRunner(CandidateRepository repository) {
         return args -> {
-            Candidate alexander = new Candidate(
+            /*Candidate alexander = new Candidate(
                "Alexander",
                "alex1@gmail.com",
                "Java basic knowledge",
@@ -23,11 +23,11 @@ public class CandidateConfig {
                     "andrew1@gmail.com",
                     "SQL basic knowledge",
                     "Accepted"
-            );
+            )
 
             repository.saveAll(
                     List.of(alexander, andrew)
-            );
+            ); */
         };
     }
 }

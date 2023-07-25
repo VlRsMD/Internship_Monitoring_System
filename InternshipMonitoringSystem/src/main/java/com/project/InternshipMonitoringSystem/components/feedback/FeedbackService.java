@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class FeedbackService {
@@ -16,14 +17,25 @@ public class FeedbackService {
     private final CandidateRepository candidateRepository;
     private final MentorRepository mentorRepository;
 
-    public FeedbackService(FeedbackRepository feedbackRepository, CandidateRepository candidateRepository, MentorRepository mentorRepository) {
+    public FeedbackService(FeedbackRepository feedbackRepository,
+                           CandidateRepository candidateRepository,
+                           MentorRepository mentorRepository) {
         this.feedbackRepository = feedbackRepository;
         this.candidateRepository = candidateRepository;
         this.mentorRepository = mentorRepository;
     }
 
-    public List<Feedback> getFeedbacks() {
-        return feedbackRepository.findAll();
+    public List<FeedbackDTO> getFeedbacks() {
+        List<Feedback> feedbacksList = feedbackRepository.findAll();
+        return feedbacksList.stream().map(this::fromEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public FeedbackDTO fromEntityToDTO(Feedback feedback) {
+        return new FeedbackDTO(feedback.getId(),
+                feedback.getFeedbackText(),
+                feedback.getCandidate().getId(),
+                feedback.getMentor().getId());
     }
 
     public void addFeedback(Feedback feedback, Long candidateId, Long mentorId) {

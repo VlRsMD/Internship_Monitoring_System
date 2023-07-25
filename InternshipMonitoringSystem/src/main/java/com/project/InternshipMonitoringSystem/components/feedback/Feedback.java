@@ -17,7 +17,6 @@ public class Feedback {
             strategy = GenerationType.SEQUENCE,
             generator = "feedback_sequence"
     )
-
     private Long id;
     private String feedbackText;
 
