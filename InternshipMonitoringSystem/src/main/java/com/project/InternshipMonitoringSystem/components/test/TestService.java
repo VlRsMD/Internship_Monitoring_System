@@ -1,30 +1,23 @@
 package com.project.InternshipMonitoringSystem.components.test;
-
-import com.project.InternshipMonitoringSystem.components.question.Question;
-import com.project.InternshipMonitoringSystem.components.question.QuestionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TestService {
     private final TestRepository testRepository;
-    private final QuestionRepository questionRepository;
 
-    public TestService(TestRepository testRepository, QuestionRepository questionRepository) {
+    public TestService(TestRepository testRepository) {
         this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
     }
 
     public List<Test> getTests() {
         return testRepository.findAll();
     }
 
-    public void addTest(Test test, Long questionId) {
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new IllegalStateException("Project with ID " + questionId + " does not exist."));
-        test.registerQuestion(question);
+    public void addTest(Test test) {
         testRepository.save(test);
     }
 
@@ -37,11 +30,13 @@ public class TestService {
     }
 
     @Transactional
-    public void addQuestionToTheTest(Long testId, Long questionId) {
-        Test test = testRepository.findById(testId)
-                .orElseThrow(() -> new IllegalStateException("Test with ID " + testId + " does not exist."));
-        Question question = questionRepository.findById(questionId)
-                .orElseThrow(() -> new IllegalStateException("Project with ID " + questionId + " does not exist."));
-        test.registerQuestion(question);
+    public void changeTestTitle(Long testId, String testTitle) {
+        if (testTitle != null && testTitle.length() > 0) {
+            Test test = testRepository.findById(testId)
+                    .orElseThrow(() -> new IllegalStateException("Test with ID " + testId + " does not exist."));
+            if(!Objects.equals(test.getTitle(), testTitle)) {
+                test.setTitle(testTitle);
+            }
+        }
     }
 }

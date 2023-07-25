@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidateService {
@@ -15,8 +16,14 @@ public class CandidateService {
         this.candidateRepository = candidateRepository;
     }
 
-    public List<Candidate> getCandidates() {
-        return candidateRepository.findAll();
+    public List<CandidateDTO> getCandidates() {
+        List<Candidate> candidatesList = candidateRepository.findAll();
+        return candidatesList.stream().map(this::fromEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public CandidateDTO fromEntityToDTO(Candidate candidate) {
+        return new CandidateDTO(candidate.getId(), candidate.getName(), candidate.getStatus());
     }
 
     public void addCandidate(Candidate candidate) {

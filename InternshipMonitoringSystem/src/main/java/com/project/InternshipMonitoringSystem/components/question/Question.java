@@ -21,7 +21,6 @@ public class Question {
             strategy = GenerationType.SEQUENCE,
             generator = "question_sequence"
     )
-
     private Long id;
     private String questionText;
 
@@ -29,9 +28,9 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private Set<Project> projects = new HashSet<>();
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "assignedQuestions")
-    private Set<Test> tests = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "testid", referencedColumnName = "id")
+    private Test test;
 
     public Question() {
     }
@@ -60,8 +59,16 @@ public class Question {
         return projects;
     }
 
-    public Set<Test> getTests() {
-        return tests;
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
     }
 
     @Override

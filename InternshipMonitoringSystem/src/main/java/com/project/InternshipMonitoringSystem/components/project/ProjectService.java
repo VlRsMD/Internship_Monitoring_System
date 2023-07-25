@@ -7,19 +7,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final QuestionRepository questionRepository;
 
-    public ProjectService(ProjectRepository projectRepository, QuestionRepository questionRepository) {
+    public ProjectService(ProjectRepository projectRepository,
+                          QuestionRepository questionRepository) {
         this.projectRepository = projectRepository;
         this.questionRepository = questionRepository;
     }
 
-    public List<Project> getProjects() {
-        return projectRepository.findAll();
+    public List<ProjectDTO> getProjects() {
+        List<Project> projectsList = projectRepository.findAll();
+        return projectsList.stream().map(this::fromEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public ProjectDTO fromEntityToDTO(Project project) {
+        return new ProjectDTO(project.getId(),
+                project.getName(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getFunctionalRequirements());
     }
 
     public void addProject(Project project, Long questionId) {

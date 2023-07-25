@@ -5,7 +5,7 @@ import com.project.InternshipMonitoringSystem.components.mentor.Mentor;
 import com.project.InternshipMonitoringSystem.components.question.Question;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,11 +22,10 @@ public class Project {
             strategy = GenerationType.SEQUENCE,
             generator = "project_sequence"
     )
-
     private Long id;
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String status;
     private String gitHubLink;
     private String trelloLink;
@@ -44,7 +43,7 @@ public class Project {
     public Project() {
     }
 
-    public Project(String name, Date startDate, Date endDate, String status, String gitHubLink, String trelloLink, String powerPointPresentation, String functionalRequirements) {
+    public Project(String name, LocalDateTime startDate, LocalDateTime endDate, String status, String gitHubLink, String trelloLink, String powerPointPresentation, String functionalRequirements) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -71,19 +70,19 @@ public class Project {
         this.name = name;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -129,6 +128,10 @@ public class Project {
 
     public Set<Mentor> getMentors() {
         return mentors;
+    }
+
+    public void setMentors(Set<Mentor> mentors) {
+        this.mentors = mentors;
     }
 
     public Question getQuestion() {

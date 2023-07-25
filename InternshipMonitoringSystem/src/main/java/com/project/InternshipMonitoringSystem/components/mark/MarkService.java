@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class MarkService {
@@ -16,14 +17,22 @@ public class MarkService {
     private final CandidateRepository candidateRepository;
     private final TestRepository testRepository;
 
-    public MarkService(MarkRepository markRepository, CandidateRepository candidateRepository, TestRepository testRepository) {
+    public MarkService(MarkRepository markRepository,
+                       CandidateRepository candidateRepository,
+                       TestRepository testRepository) {
         this.markRepository = markRepository;
         this.candidateRepository = candidateRepository;
         this.testRepository = testRepository;
     }
 
-    public List<Mark> getMarks() {
-        return markRepository.findAll();
+    public List<MarkDTO> getMarks() {
+        List<Mark> marksList = markRepository.findAll();
+        return marksList.stream().map(this::fromEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public MarkDTO fromEntityToDTO(Mark mark) {
+        return new MarkDTO(mark.getId(), mark.getValue(), mark.getCandidate().getId(), mark.getTest().getId());
     }
 
     public void addMark(Mark mark, Long candidateId, Long testId) {

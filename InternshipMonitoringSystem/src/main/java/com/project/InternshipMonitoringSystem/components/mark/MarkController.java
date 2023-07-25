@@ -1,5 +1,7 @@
 package com.project.InternshipMonitoringSystem.components.mark;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -7,6 +9,8 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/mark")
 public class MarkController {
+    Logger logger = LoggerFactory.getLogger(MarkController.class);
+
     private final MarkService markService;
 
     public MarkController(MarkService markService) {
@@ -14,7 +18,8 @@ public class MarkController {
     }
 
     @GetMapping
-    public List<Mark> getMarks() {
+    public List<MarkDTO> getMarks() {
+        logger.trace("'getMarks' method accessed");
         return markService.getMarks();
     }
 
@@ -22,13 +27,14 @@ public class MarkController {
     public void addMark(
             @RequestBody Mark mark,
             @PathVariable("candidateId") Long candidateId,
-            @PathVariable("testId") Long testId
-    ) {
+            @PathVariable("testId") Long testId) {
+        logger.trace("'addMark' method accessed");
         markService.addMark(mark, candidateId, testId);
     }
 
     @DeleteMapping(path = "{markId}")
     public void deleteMark(@PathVariable("markId") Long markId) {
+        logger.trace("'deleteMark' method accessed");
         markService.deleteMark(markId);
     }
 
@@ -36,6 +42,7 @@ public class MarkController {
     public void changeMarkValue(
             @PathVariable("markId") Long markId,
             @RequestParam(required = false) int value) {
+        logger.trace("'changeMarkValue' method accessed");
         markService.changeMarkValue(markId, value);
     }
 }

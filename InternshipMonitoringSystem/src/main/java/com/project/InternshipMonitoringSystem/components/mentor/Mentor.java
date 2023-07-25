@@ -21,7 +21,6 @@ public class Mentor {
             strategy = GenerationType.SEQUENCE,
             generator = "mentor_sequence"
     )
-
     private Long id;
     private String name;
 
@@ -68,15 +67,15 @@ public class Mentor {
         return supervisedProjects;
     }
 
+    public void registerProject(Project project) {
+        supervisedProjects.add(project);
+    }
+
     @Override
     public String toString() {
         return "Mentor{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
-    }
-
-    public void registerProject(Project project) {
-        supervisedProjects.add(project);
     }
 }
