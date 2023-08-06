@@ -11,7 +11,7 @@ public class TestConfig {
     @Bean
     CommandLineRunner testCommandLineRunner(TestRepository repository) {
         return args -> {
-            Test test1 = new Test(
+            /* Test test1 = new Test(
                     "Java Test"
             );
 
@@ -21,7 +21,7 @@ public class TestConfig {
 
             repository.saveAll(
                     List.of(test1, test2)
-            );
+            ); */
         };
     }
 }

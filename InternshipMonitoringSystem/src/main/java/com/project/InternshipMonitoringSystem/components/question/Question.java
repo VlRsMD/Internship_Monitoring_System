@@ -25,10 +25,10 @@ public class Question {
     private String questionText;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "question")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "question")
     private Set<Project> projects = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "testid", referencedColumnName = "id")
     private Test test;
 

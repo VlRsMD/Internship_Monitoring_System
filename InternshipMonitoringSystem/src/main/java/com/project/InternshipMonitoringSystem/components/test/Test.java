@@ -25,11 +25,11 @@ public class Test {
     private String title;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "test")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "test")
     private Set<Question> questions = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "test")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "test")
     private Set<Mark> marks = new HashSet<>();
 
     public Test() {

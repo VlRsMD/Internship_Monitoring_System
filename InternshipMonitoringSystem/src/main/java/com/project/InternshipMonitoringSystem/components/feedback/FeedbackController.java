@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/feedback")
 public class FeedbackController {
-    Logger logger = LoggerFactory.getLogger(FeedbackController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
 
     private final FeedbackService feedbackService;
 
@@ -19,7 +19,7 @@ public class FeedbackController {
 
     @GetMapping
     public List<FeedbackDTO> getFeedbacks() {
-        logger.trace("'getFeedbacks' method accessed");
+        logger.info("Request to fetch feedbacks in the system.");
         return feedbackService.getFeedbacks();
     }
 
@@ -27,13 +27,13 @@ public class FeedbackController {
     public void addFeedback(@RequestBody Feedback feedback,
                             @PathVariable("candidateId") Long candidateId,
                             @PathVariable("mentorId") Long mentorId) {
-        logger.trace("'addFeedback' method accessed");
+        logger.info("Request to add a new feedback into the system.");
         feedbackService.addFeedback(feedback, candidateId, mentorId);
     }
 
     @DeleteMapping(path = "{feedbackId}")
     public void deleteFeedback(@PathVariable("feedbackId") Long feedbackId) {
-        logger.trace("'deleteFeedback' method accessed");
+        logger.info("Request to delete a particular feedback from the system.");
         feedbackService.deleteFeedback(feedbackId);
     }
 
@@ -41,7 +41,7 @@ public class FeedbackController {
     public void changeFeedbackText(
             @PathVariable("feedbackId") Long feedbackId,
             @RequestParam(required = false) String feedbackText) {
-        logger.trace("'changeFeedbackText' method accessed");
+        logger.info("Request to change the feedback text of a particular feedback.");
         feedbackService.changeFeedbackText(feedbackId, feedbackText);
     }
 }

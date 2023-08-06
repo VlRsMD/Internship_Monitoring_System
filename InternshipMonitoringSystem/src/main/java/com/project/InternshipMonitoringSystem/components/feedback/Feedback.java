@@ -20,11 +20,11 @@ public class Feedback {
     private Long id;
     private String feedbackText;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "candidateid", referencedColumnName = "id")
     private Candidate candidate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "mentorid", referencedColumnName = "id")
     private Mentor mentor;
 

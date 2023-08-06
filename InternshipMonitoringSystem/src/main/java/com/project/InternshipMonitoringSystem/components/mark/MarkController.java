@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/mark")
 public class MarkController {
-    Logger logger = LoggerFactory.getLogger(MarkController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MarkController.class);
 
     private final MarkService markService;
 
@@ -19,7 +19,7 @@ public class MarkController {
 
     @GetMapping
     public List<MarkDTO> getMarks() {
-        logger.trace("'getMarks' method accessed");
+        logger.info("Request to fetch marks in the system.");
         return markService.getMarks();
     }
 
@@ -28,13 +28,13 @@ public class MarkController {
             @RequestBody Mark mark,
             @PathVariable("candidateId") Long candidateId,
             @PathVariable("testId") Long testId) {
-        logger.trace("'addMark' method accessed");
+        logger.info("Request to add a new mark into the system.");
         markService.addMark(mark, candidateId, testId);
     }
 
     @DeleteMapping(path = "{markId}")
     public void deleteMark(@PathVariable("markId") Long markId) {
-        logger.trace("'deleteMark' method accessed");
+        logger.info("Request to delete a particular mark from the system.");
         markService.deleteMark(markId);
     }
 
@@ -42,7 +42,7 @@ public class MarkController {
     public void changeMarkValue(
             @PathVariable("markId") Long markId,
             @RequestParam(required = false) int value) {
-        logger.trace("'changeMarkValue' method accessed");
+        logger.info("Request to change the mark value of a particular mark.");
         markService.changeMarkValue(markId, value);
     }
 }

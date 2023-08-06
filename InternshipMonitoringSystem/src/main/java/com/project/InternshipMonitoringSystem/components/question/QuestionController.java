@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/question")
 public class QuestionController {
-    Logger logger = LoggerFactory.getLogger(QuestionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
     private final QuestionService questionService;
 
@@ -19,20 +19,20 @@ public class QuestionController {
 
     @GetMapping
     public List<QuestionDTO> getQuestions() {
-        logger.trace("'getQuestions' method accessed");
+        logger.info("Request to fetch questions in the system.");
         return questionService.getQuestions();
     }
 
     @PostMapping(path = "test/{testId}")
     public void addQuestion(@RequestBody Question question,
                             @PathVariable("testId") Long testId) {
-        logger.trace("'addQuestion' method accessed");
+        logger.info("Request to add a new question into the system.");
         questionService.addQuestion(question, testId);
     }
 
     @DeleteMapping(path = "{questionId}")
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
-        logger.trace("'deleteQuestion' method accessed");
+        logger.info("Request to delete a particular question from the system.");
         questionService.deleteQuestion(questionId);
     }
 
@@ -40,7 +40,7 @@ public class QuestionController {
     public void changeQuestionText(
             @PathVariable("questionId") Long questionId,
             @RequestParam(required = false) String questionText) {
-        logger.trace("'changeQuestionText' method accessed");
+        logger.info("Request to change the question text of a particular question.");
         questionService.changeQuestionText(questionId, questionText);
     }
 }
