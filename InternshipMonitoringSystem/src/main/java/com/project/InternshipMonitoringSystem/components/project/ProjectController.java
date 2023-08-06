@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/project")
 public class ProjectController {
-    Logger logger = LoggerFactory.getLogger(ProjectController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     private final ProjectService projectService;
 
@@ -19,7 +19,7 @@ public class ProjectController {
 
     @GetMapping
     public List<ProjectDTO> getProjects() {
-        logger.trace("'getProjects' method accessed");
+        logger.info("Request to fetch projects in the system.");
         return projectService.getProjects();
     }
 
@@ -27,13 +27,13 @@ public class ProjectController {
     public void addProject(
             @RequestBody Project project,
             @PathVariable("questionId") Long questionId) {
-        logger.trace("'addProject' method accessed");
+        logger.info("Request to add a new project into the system.");
         projectService.addProject(project, questionId);
     }
 
     @DeleteMapping(path = "{projectId}")
     public void deleteProject(@PathVariable("projectId") Long projectId) {
-        logger.trace("'deleteProject' method accessed");
+        logger.info("Request to delete a particular project from the system.");
         projectService.deleteProject(projectId);
     }
 
@@ -41,7 +41,7 @@ public class ProjectController {
     public void changeFunctionalRequirements(
             @PathVariable("projectId") Long projectId,
             @RequestParam(required = false) String functionalRequirements) {
-        logger.trace("'changeFunctionalRequirements' method accessed");
+        logger.info("Request to change the functional requirements of a particular project.");
         projectService.changeFunctionalRequirements(projectId, functionalRequirements);
     }
 }

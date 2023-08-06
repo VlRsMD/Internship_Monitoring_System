@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/test")
 public class TestController {
-    Logger logger = LoggerFactory.getLogger(TestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
     private final TestService testService;
 
@@ -19,19 +19,19 @@ public class TestController {
 
     @GetMapping
     public List<Test> getTests() {
-        logger.trace("'getTests' method accessed");
+        logger.info("Request to fetch tests in the system.");
         return testService.getTests();
     }
 
     @PostMapping(path = "question/{questionId}")
     public void addTest(@RequestBody Test test) {
-        logger.trace("'addTest' method accessed");
+        logger.info("Request to add a new test into the system.");
         testService.addTest(test);
     }
 
     @DeleteMapping(path = "{testId}")
     public void deleteTest(@PathVariable("testId") Long testId) {
-        logger.trace("'deleteTest' method accessed");
+        logger.info("Request to delete a particular test from the system.");
         testService.deleteTest(testId);
     }
 
@@ -39,7 +39,7 @@ public class TestController {
     public void changeTestTitle(
             @PathVariable("testId") Long testId,
             @RequestParam(required = false) String testTitle) {
-        logger.trace("'changeTestTitle' method accessed");
+        logger.info("Request to change the test title of a particular test.");
         testService.changeTestTitle(testId, testTitle);
     }
 }

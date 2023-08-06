@@ -28,11 +28,11 @@ public class Candidate {
     private String status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "candidate")
     private Set<Feedback> feedbacks = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "candidate")
     private Set<Mark> marks = new HashSet<>();
 
     public Candidate() {

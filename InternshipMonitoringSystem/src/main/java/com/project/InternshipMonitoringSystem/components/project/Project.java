@@ -33,10 +33,10 @@ public class Project {
     private String functionalRequirements;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "supervisedProjects")
+    @ManyToMany(cascade = CascadeType.REMOVE, mappedBy = "supervisedProjects")
     private Set<Mentor> mentors = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "technical_questionid", referencedColumnName = "id")
     private Question question;
 

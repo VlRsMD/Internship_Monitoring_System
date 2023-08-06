@@ -25,10 +25,10 @@ public class Mentor {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "mentor")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "mentor")
     private Set<Feedback> feedbacks = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "project_supervised",
             joinColumns = @JoinColumn(name = "mentor_id"),

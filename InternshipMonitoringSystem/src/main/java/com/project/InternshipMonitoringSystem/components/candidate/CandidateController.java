@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/candidate")
 public class CandidateController {
-    Logger logger = LoggerFactory.getLogger(CandidateController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 
     private final CandidateService candidateService;
 
@@ -19,19 +19,19 @@ public class CandidateController {
 
     @GetMapping
     public List<CandidateDTO> getCandidates() {
-        logger.trace("'getCandidates' method accessed");
+        logger.info("Request to fetch candidates in the system.");
         return candidateService.getCandidates();
     }
 
     @PostMapping
     public void addCandidate(@RequestBody Candidate candidate) {
-        logger.trace("'addCandidate' method accessed");
+        logger.info("Request to add a new candidate into the system.");
         candidateService.addCandidate(candidate);
     }
 
     @DeleteMapping("{candidateId}")
     public void deleteCandidate(@PathVariable("candidateId") Long candidateId) {
-        logger.trace("'deleteCandidate' method accessed");
+        logger.info("Request to delete a particular candidate from the system.");
         candidateService.deleteCandidate(candidateId);
     }
 
@@ -39,7 +39,7 @@ public class CandidateController {
     public void changeCandidateStatus(
             @PathVariable("candidateId") Long candidateId,
             @RequestParam(required = false) String status) {
-        logger.trace("'changeCandidateStatus' method accessed");
+        logger.info("Request to change the status of a particular candidate.");
         candidateService.changeCandidateStatus(candidateId, status);
     }
 }

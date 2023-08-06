@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/mentor")
 public class MentorController {
-    Logger logger = LoggerFactory.getLogger(MentorController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MentorController.class);
 
     private final MentorService mentorService;
 
@@ -19,7 +19,7 @@ public class MentorController {
 
     @GetMapping
     public List<MentorDTO> getMentors() {
-        logger.trace("'getMentors' method accessed");
+        logger.info("Request to fetch mentors in the system.");
         return mentorService.getMentors();
     }
 
@@ -27,13 +27,13 @@ public class MentorController {
     public void addMentor(
             @RequestBody Mentor mentor,
             @PathVariable("projectId") Long projectId) {
-        logger.trace("'addMentor' method accessed");
+        logger.info("Request to add a new mentor into the system.");
         mentorService.addMentor(mentor, projectId);
     }
 
     @DeleteMapping(path = "{mentorId}")
     public void deleteMentor(@PathVariable("mentorId") Long mentorId) {
-        logger.trace("'deleteMentor' method accessed");
+        logger.info("Request to delete a particular mentor from the system.");
         mentorService.deleteMentor(mentorId);
     }
 
@@ -41,7 +41,7 @@ public class MentorController {
     public void addProjectToSupervise(
             @PathVariable("mentorId") Long mentorId,
             @PathVariable("projectId") Long projectId) {
-        logger.trace("'addProjectToSupervise' method accessed");
+        logger.info("Request to add a project to supervise to a particular mentor.");
         mentorService.addProjectToSupervise(mentorId, projectId);
     }
 }

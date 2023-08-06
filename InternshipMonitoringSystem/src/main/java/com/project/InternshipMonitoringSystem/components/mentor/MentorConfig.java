@@ -11,7 +11,7 @@ public class MentorConfig {
     @Bean
     CommandLineRunner mentorCommandLineRunner(MentorRepository repository) {
         return args -> {
-            Mentor john = new Mentor(
+            /* Mentor john = new Mentor(
                     "John"
             );
 
@@ -21,7 +21,7 @@ public class MentorConfig {
 
             repository.saveAll(
                     List.of(john, william)
-            );
+            ); */
         };
     }
 }

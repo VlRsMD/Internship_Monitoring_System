@@ -1,7 +1,10 @@
 package com.project.InternshipMonitoringSystem.components.mentor;
 
+import com.project.InternshipMonitoringSystem.components.candidate.CandidateController;
 import com.project.InternshipMonitoringSystem.components.project.Project;
 import com.project.InternshipMonitoringSystem.components.project.ProjectRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MentorService {
+    private static final Logger logger = LoggerFactory.getLogger(CandidateController.class);
+
     private final MentorRepository mentorRepository;
     private final ProjectRepository projectRepository;
 
@@ -38,7 +43,10 @@ public class MentorService {
 
     public void addMentor(Mentor mentor, Long projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalStateException("Project with ID " + projectId + " does not exist."));
+                .orElseThrow(() -> {
+                    logger.error("Project with ID " + projectId + " does not exist. Unable to create a new mentor.");
+                    throw new IllegalStateException("Project with ID " + projectId + " does not exist. Unable to create a new mentor.");
+                });
         mentor.registerProject(project);
         mentorRepository.save(mentor);
     }
@@ -46,7 +54,8 @@ public class MentorService {
     public void deleteMentor(Long mentorId) {
         boolean exists = mentorRepository.existsById(mentorId);
         if (!exists) {
-            throw new IllegalStateException("Mentor with ID " + mentorId + " does not exist.");
+            logger.error("Mentor with ID " + mentorId + " does not exist. Unable to delete a nonexistent mentor.");
+            throw new IllegalStateException("Mentor with ID " + mentorId + " does not exist. Unable to delete a nonexistent mentor.");
         }
         mentorRepository.deleteById(mentorId);
     }
@@ -54,9 +63,16 @@ public class MentorService {
     @Transactional
     public void addProjectToSupervise(Long mentorId, Long projectId) {
         Mentor mentor = mentorRepository.findById(mentorId)
-                .orElseThrow(() -> new IllegalStateException("Mentor with ID " + mentorId + " does not exist."));
+                .orElseThrow(() -> {
+                    logger.error("Mentor with ID " + mentorId + " does not exist. Unable to add project to a nonexistent mentor.");
+                    throw new IllegalStateException("Mentor with ID " + mentorId + " does not exist. Unable to add project to a nonexistent mentor.");
+                });
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalStateException("Project with ID " + projectId + " does not exist."));
+                .orElseThrow(() -> {
+                    logger.error("Project with ID " + projectId + " does not exist. Unable to add a nonexistent project to be supervised by mentor.");
+                    throw new IllegalStateException("Project with ID " + projectId + " does not exist. Unable to add a nonexistent project to be supervised by mentor.");
+                });
         mentor.registerProject(project);
+        logger.info("Project with ID " + projectId + " has been registered as supervised by the mentor with ID " + mentorId + ".");
     }
 }

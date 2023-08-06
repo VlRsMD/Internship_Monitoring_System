@@ -20,11 +20,11 @@ public class Mark {
     private Long id;
     private int value;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "candidateid", referencedColumnName = "id")
     private Candidate candidate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "testid", referencedColumnName = "id")
     private Test test;
 
