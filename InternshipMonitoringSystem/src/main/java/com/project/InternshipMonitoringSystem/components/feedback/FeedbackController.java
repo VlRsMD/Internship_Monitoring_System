@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/feedback")
+@RequestMapping("api/v1/feedback")
 public class FeedbackController {
     private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
 
@@ -23,7 +23,7 @@ public class FeedbackController {
         return feedbackService.getFeedbacks();
     }
 
-    @PostMapping(path = "candidate/{candidateId}/mentor/{mentorId}")
+    @PostMapping("candidate/{candidateId}/mentor/{mentorId}")
     public void addFeedback(@RequestBody Feedback feedback,
                             @PathVariable("candidateId") Long candidateId,
                             @PathVariable("mentorId") Long mentorId) {
@@ -31,13 +31,13 @@ public class FeedbackController {
         feedbackService.addFeedback(feedback, candidateId, mentorId);
     }
 
-    @DeleteMapping(path = "{feedbackId}")
+    @DeleteMapping("{feedbackId}")
     public void deleteFeedback(@PathVariable("feedbackId") Long feedbackId) {
         logger.info("Request to delete a particular feedback from the system.");
         feedbackService.deleteFeedback(feedbackId);
     }
 
-    @PatchMapping(path = "{feedbackId}")
+    @PatchMapping("{feedbackId}")
     public void changeFeedbackText(
             @PathVariable("feedbackId") Long feedbackId,
             @RequestParam(required = false) String feedbackText) {

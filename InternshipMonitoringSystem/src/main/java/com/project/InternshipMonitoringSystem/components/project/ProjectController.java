@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/project")
+@RequestMapping("api/v1/project")
 public class ProjectController {
     private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
@@ -23,7 +23,7 @@ public class ProjectController {
         return projectService.getProjects();
     }
 
-    @PostMapping(path = "question/{questionId}")
+    @PostMapping("question/{questionId}")
     public void addProject(
             @RequestBody Project project,
             @PathVariable("questionId") Long questionId) {
@@ -31,13 +31,13 @@ public class ProjectController {
         projectService.addProject(project, questionId);
     }
 
-    @DeleteMapping(path = "{projectId}")
+    @DeleteMapping("{projectId}")
     public void deleteProject(@PathVariable("projectId") Long projectId) {
         logger.info("Request to delete a particular project from the system.");
         projectService.deleteProject(projectId);
     }
 
-    @PatchMapping(path = "{projectId}")
+    @PatchMapping("{projectId}")
     public void changeFunctionalRequirements(
             @PathVariable("projectId") Long projectId,
             @RequestParam(required = false) String functionalRequirements) {
