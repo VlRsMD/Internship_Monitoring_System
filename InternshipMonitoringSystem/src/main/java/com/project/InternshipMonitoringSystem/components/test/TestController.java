@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/test")
+@RequestMapping("api/v1/test")
 public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
@@ -23,19 +23,19 @@ public class TestController {
         return testService.getTests();
     }
 
-    @PostMapping(path = "question/{questionId}")
+    @PostMapping
     public void addTest(@RequestBody Test test) {
         logger.info("Request to add a new test into the system.");
         testService.addTest(test);
     }
 
-    @DeleteMapping(path = "{testId}")
+    @DeleteMapping("{testId}")
     public void deleteTest(@PathVariable("testId") Long testId) {
         logger.info("Request to delete a particular test from the system.");
         testService.deleteTest(testId);
     }
 
-    @PatchMapping(path = "{testId}/question/{questionId}")
+    @PatchMapping("{testId}/question/{questionId}")
     public void changeTestTitle(
             @PathVariable("testId") Long testId,
             @RequestParam(required = false) String testTitle) {

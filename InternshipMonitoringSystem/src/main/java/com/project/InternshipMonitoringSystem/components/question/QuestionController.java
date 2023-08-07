@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/question")
+@RequestMapping("api/v1/question")
 public class QuestionController {
     private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
@@ -23,20 +23,20 @@ public class QuestionController {
         return questionService.getQuestions();
     }
 
-    @PostMapping(path = "test/{testId}")
+    @PostMapping("test/{testId}")
     public void addQuestion(@RequestBody Question question,
                             @PathVariable("testId") Long testId) {
         logger.info("Request to add a new question into the system.");
         questionService.addQuestion(question, testId);
     }
 
-    @DeleteMapping(path = "{questionId}")
+    @DeleteMapping("{questionId}")
     public void deleteQuestion(@PathVariable("questionId") Long questionId) {
         logger.info("Request to delete a particular question from the system.");
         questionService.deleteQuestion(questionId);
     }
 
-    @PatchMapping(path = "{questionId}")
+    @PatchMapping("{questionId}")
     public void changeQuestionText(
             @PathVariable("questionId") Long questionId,
             @RequestParam(required = false) String questionText) {

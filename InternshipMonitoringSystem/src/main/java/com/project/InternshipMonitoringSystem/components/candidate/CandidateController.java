@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/candidate")
+@RequestMapping("api/v1/candidate")
 public class CandidateController {
     private static final Logger logger = LoggerFactory.getLogger(CandidateController.class);
 

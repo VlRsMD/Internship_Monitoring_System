@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/mark")
+@RequestMapping("api/v1/mark")
 public class MarkController {
     private static final Logger logger = LoggerFactory.getLogger(MarkController.class);
 
@@ -23,7 +23,7 @@ public class MarkController {
         return markService.getMarks();
     }
 
-    @PostMapping(path = "candidate/{candidateId}/test/{testId}")
+    @PostMapping("candidate/{candidateId}/test/{testId}")
     public void addMark(
             @RequestBody Mark mark,
             @PathVariable("candidateId") Long candidateId,
@@ -32,13 +32,13 @@ public class MarkController {
         markService.addMark(mark, candidateId, testId);
     }
 
-    @DeleteMapping(path = "{markId}")
+    @DeleteMapping("{markId}")
     public void deleteMark(@PathVariable("markId") Long markId) {
         logger.info("Request to delete a particular mark from the system.");
         markService.deleteMark(markId);
     }
 
-    @PatchMapping(path = "{markId}")
+    @PatchMapping("{markId}")
     public void changeMarkValue(
             @PathVariable("markId") Long markId,
             @RequestParam(required = false) int value) {
